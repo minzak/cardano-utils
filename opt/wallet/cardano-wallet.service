@@ -1,0 +1,25 @@
+[Unit]
+Description=Cardano Pool
+Wants=network-online.target
+After=network.target network-online.target multi-user.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/opt/wallet
+Type=simple
+
+ExecStart=/opt/wallet/cardano-wallet serve --listen-address 127.0.0.1 --port 8090 --node-socket /opt/cardano/node-core/db/node.socket --mainnet --database /opt/wallet/
+
+KillSignal = SIGINT
+RestartKillSignal = SIGINT
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=wallet
+LimitNOFILE=32768
+
+Restart=always
+RestartSec=15s
+
+[Install]
+WantedBy=multi-user.target

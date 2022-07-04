@@ -1,0 +1,27 @@
+[Unit]
+Description=Cardano Pool
+Wants=network-online.target
+After=network.target network-online.target multi-user.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/opt/cardano
+Type=simple
+
+ExecStart=/opt/cardano/cardano-node run --topology=/opt/cardano/node-relay/mainnet-topology.json --config=/opt/cardano/node-relay/mainnet-config.json \
+  --database-path=/opt/cardano/node-relay/db --socket-path=/opt/cardano/node-relay/db/node.socket --port 3002
+
+KillSignal = SIGINT
+RestartKillSignal = SIGINT
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=cardano
+LimitNOFILE=32768
+
+Restart=always
+RestartSec=15s
+TimeoutStopSec=300
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,27 @@
+[Unit]
+Description=Cardano Pool
+Wants=network-online.target
+After=network.target network-online.target multi-user.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/opt/cardano
+Type=simple
+
+ExecStart=/opt/cardano/cardano-node run --topology=/opt/cardano/node-core/mainnet-topology.json --config=/opt/cardano/node-core/mainnet-config.json \
+  --shelley-kes-key=/opt/cardano/pool-keys/node2.kes.skey --shelley-vrf-key=/opt/cardano/pool-keys/node2.vrf.skey --shelley-operational-certificate=/opt/cardano/pool-keys/node2.op.cert \
+  --database-path /opt/cardano/node-core/db --socket-path /opt/cardano/node-core/db/node.socket --port 3000
+
+KillSignal = SIGINT
+RestartKillSignal = SIGINT
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=cardano
+LimitNOFILE=32768
+
+Restart=on-failure
+RestartSec=15s
+
+[Install]
+WantedBy=multi-user.target
