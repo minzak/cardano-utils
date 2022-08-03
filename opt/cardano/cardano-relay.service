@@ -20,7 +20,7 @@ SyslogIdentifier=cardano
 LimitNOFILE=32768
 
 Restart=always
-RestartSec=15s
+RestartSec=60s
 TimeoutStopSec=300
 
 [Install]
