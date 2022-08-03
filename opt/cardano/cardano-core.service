@@ -21,7 +21,8 @@ SyslogIdentifier=cardano
 LimitNOFILE=32768
 
 Restart=on-failure
-RestartSec=15s
+TimeoutStopSec=120
+RestartSec=60s
 
 [Install]
 WantedBy=multi-user.target
